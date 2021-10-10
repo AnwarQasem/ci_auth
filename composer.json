@@ -1,0 +1,19 @@
+{
+    "name": "anwarqasem/ci_auth",
+    "description": "Simple CI Auth",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Anwarqasem\\CiAuth\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anwar Subhi",
+            "email": "anwar.subhi@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
