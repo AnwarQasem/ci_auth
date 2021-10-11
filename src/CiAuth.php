@@ -2,7 +2,7 @@
 
 namespace Anwarqasem\CiAuth;
 
-require 'vendor/autoload.php';
+//require 'vendor/autoload.php';
 
 use Anwarqasem\CiAuth\Models\UsersModel;
 use Anwarqasem\CiAuth\Models\TokenModel;
@@ -17,7 +17,7 @@ use ReflectionException;
 /**
  *
  */
-class Ci_Auth implements FilterInterface
+class CiAuth implements FilterInterface
 {
 
     /**
