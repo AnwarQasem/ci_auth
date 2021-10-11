@@ -1,5 +1,10 @@
 # CiAuth
 
+Because the library is in development mode if you want to install it add in your composer.json:
+```json lines
+"minimum-stability": "dev"
+```
+
 after ``composer request anwarqasem/ci_auth``
 
 ## Instalation & Configuration
