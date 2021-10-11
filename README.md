@@ -34,7 +34,7 @@ something like this:
     ];
 ```
 
-Find ``$globals`` array and add ``'is_logged_in' => [ 'except' => [ 'auth/*', 'home/*', '/' ] ],``. On a new CI installation it should looks
+Find ``$globals`` array and add ``'is_logged_in' => [ 'except' => [ '/', 'auth/*' ] ],``. On a new CI installation it should looks
 something like this:
 
 ```injectablephp
