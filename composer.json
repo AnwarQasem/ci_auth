@@ -16,7 +16,6 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "codeigniter4/framework": "dev-master",
         "firebase/php-jwt": "dev-master"
     }
 }

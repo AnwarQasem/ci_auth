@@ -2,8 +2,6 @@
 
 namespace Anwarqasem\CiAuth;
 
-//require 'vendor/autoload.php';
-
 use Anwarqasem\CiAuth\Models\UsersModel;
 use Anwarqasem\CiAuth\Models\TokenModel;
 use Config\Services;
