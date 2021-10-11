@@ -2,7 +2,6 @@
 
 use CodeIgniter\Model;
 
-
 class MigrationsModel extends Model
 {
     protected $table      = 'migrations';

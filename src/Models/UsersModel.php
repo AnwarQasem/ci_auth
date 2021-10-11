@@ -20,24 +20,9 @@ class UsersModel extends Model
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
 
-    protected $validationRules = [
-        "name"     => "required",
-        "email"    => "required|valid_email|is_unique[users.email]|min_length[6]",
-        "password" => "required|min_length[8]",
-    ];
+    protected $validationRules = [];
 
-    protected $validationMessages = [
-        "name"     => [
-            "required" => "Name is required"
-        ],
-        "email"    => [
-            "required"    => "Email required",
-            "valid_email" => "Email address is not in format"
-        ],
-        "password" => [
-            "required" => "password is required"
-        ],
-    ];
+    protected $validationMessages = [];
 
     protected $skipValidation = false;
 

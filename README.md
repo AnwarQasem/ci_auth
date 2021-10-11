@@ -16,8 +16,9 @@ JWT_SECRET=<change:some_random_words_or_chars>
 JWT_ISS=<change:Issuer>
 JWT_AUD=<change:Audience>
 JWT_SUB=<change:Subject>
-
+JWT_EXP=<change:ExpirationTime>
 ```
+`JWD_EXP` in hours. Eg: `JWT_EXP=5`
 
 ### Filters ``app/Config/Filters.php``
 
@@ -39,20 +40,22 @@ something like this:
 ```injectablephp
 public $globals = [
         'before' => [
-            'honeypot',
-            'csrf',
+            // 'honeypot',
+            // 'csrf',
             'is_logged_in' => [
                 'except' => [
-                    'auth/*',
-                    'home/*',
-                    '/'
+                    '/',
+                    'auth/*'
                 ]
-            ],
+            ]
         ],
         'after' => [
-            'toolbar',
-            'honeypot',
+            // 'toolbar',
+            // 'honeypot',
         ],
     ];
 ```
 
+## Usage 
+
+https://documenter.getpostman.com/view/3304510/UV5Ro1Lw

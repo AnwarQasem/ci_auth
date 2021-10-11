@@ -7,21 +7,21 @@ use Anwarqasem\CiAuth\Models\TokenModel;
 use Config\Services;
 use Exception;
 use Firebase\JWT\JWT;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use CodeIgniter\Filters\FilterInterface;
 use ReflectionException;
+
 
 /**
  *
  */
-class CiAuth implements FilterInterface
+class CiAuth
 {
+
 
     /**
      * @var UsersModel
      */
     private UsersModel $usersModel;
+
     /**
      * @var TokenModel
      */
@@ -30,17 +30,16 @@ class CiAuth implements FilterInterface
     /**
      *
      */
-    function __construct()
+    public function initController()
     {
         $this->usersModel = new UsersModel();
         $this->tokenModel = new TokenModel();
     }
 
     /**
-     * @return array
      * @throws ReflectionException
      */
-    public function login(): array
+    public function login()
     {
         $validation = Services::validation();
         $request    = Services::request();
@@ -51,17 +50,17 @@ class CiAuth implements FilterInterface
             "password" => 'required|min_length[8]'
         ], [
             "email"    => [
-                'required'    => "Email is required!",
-                'valid_email' => "Email address is not in format!",
+                'required'    => lang('validation.email_required'),
+                'valid_email' => lang('validation.email_valid_email')
             ],
             "password" => [
-                'required'   => "Password is required!",
-                'min_length' => "Password minimum 8 characters"
+                'required'   => lang('validation.password_required'),
+                'min_length' => lang('validation.password_min_length')
             ]
         ]);
 
         if (!$validation->run($jsonArray)) {
-            return ['error' => true, 'data' => $validation->getErrors()];
+            $this->view(['error' => true, 'data' => $validation->getErrors()]);
         }
 
         $user = $this->usersModel->login($jsonArray);
@@ -71,24 +70,24 @@ class CiAuth implements FilterInterface
         } else if (is_array($user) && count($user) == 0) {
             $result = ['error' => true, 'data' => ["Login failed. Email or password incorrect"]];
         } else {
+
             $token = $this->token($user);
             if ($token) {
                 $return_user        = $this->usersModel->select(['id', 'name', 'email'])->find($user->id);
                 $return_user->token = $token;
-
-                $result = ['error' => false, 'data' => $return_user];
+                $result             = ['error' => false, 'data' => $return_user];
             } else {
                 $result = ['error' => true, 'data' => ["Login failed. Could not login."]];
             }
         }
 
-        return $result;
+        $this->view($result);
     }
 
     /**
      * @throws ReflectionException
      */
-    public function register(): array
+    public function register()
     {
         $validation = Services::validation();
         $request    = Services::request();
@@ -97,25 +96,26 @@ class CiAuth implements FilterInterface
 
         $validation->setRules([
             "name"     => 'required|min_length[4]',
-            "email"    => 'required|valid_email',
+            "email"    => 'required|valid_email|is_unique[users.email]',
             "password" => 'required|min_length[8]'
         ], [
             "name"     => [
-                'required'   => "Name is required!",
-                'min_length' => "Name minimum 4 characters"
+                'required'   => lang('validation.name_required'),
+                'min_length' => lang('validation.name_min_length')
             ],
             "email"    => [
-                'required'    => "Email is required!",
-                'valid_email' => "Email address is not in format!",
+                'required'    => lang('validation.email_required'),
+                'valid_email' => lang('validation.email_valid_email'),
+                'is_unique'   => lang('validation.email_is_unique')
             ],
             "password" => [
-                'required'   => "Password is required!",
-                'min_length' => "Password minimum 8 characters"
+                'required'   => lang('validation.password_required'),
+                'min_length' => lang('validation.password_min_length')
             ]
         ]);
 
         if (!$validation->run($jsonArray)) {
-            return ['error' => true, 'data' => $validation->getErrors()];
+            $this->view(['error' => true, 'data' => $validation->getErrors()]);
         }
 
         $user = $this->usersModel->insert($jsonArray);
@@ -126,14 +126,14 @@ class CiAuth implements FilterInterface
             $result = ['error' => false, 'data' => $this->usersModel->find($user)];
         }
 
-        return $result;
+        $this->view($result);
 
     }
 
     /**
      * @throws ReflectionException
      */
-    public function forgot_password(): array
+    public function forgot_password()
     {
         $validation = Services::validation();
         $request    = Services::request();
@@ -150,7 +150,7 @@ class CiAuth implements FilterInterface
         ]);
 
         if (!$validation->run($jsonArray)) {
-            return ['error' => true, 'data' => $validation->getErrors()];
+            $this->view(['error' => true, 'data' => $validation->getErrors()]);
         }
 
         $key_unique = md5(password_hash(date("U") . rand(1000, 9999), PASSWORD_DEFAULT));
@@ -159,11 +159,11 @@ class CiAuth implements FilterInterface
 
         $user = $this->usersModel->where('email', $jsonArray['email'])->first();
         if (!$user) {
-            return ['error' => true, 'data' => ['Email not found']];
+            $result = ['error' => true, 'data' => ['Email not found']];
         }
         $sql = $this->usersModel->update($user->id, ['password_recovery' => $key]);
         if (!$sql) {
-            return ['error' => true, 'data' => ['Password recovery failed.']];
+            $result = ['error' => true, 'data' => ['Password recovery failed.']];
         }
 
         $change_password_link = getenv('FRONTEND_URL') . "/recover/$user->email/$key_unique";
@@ -175,11 +175,12 @@ class CiAuth implements FilterInterface
         $email->setMessage("Please click on the following link: <a href='$change_password_link'>$change_password_link</a>");
 
         if ($email->send()) {
-            return ['error' => false, 'data' => ['An email was send with the reset password link']];
+            $result = ['error' => false, 'data' => ['An email was send with the reset password link']];
         } else {
-            return ['error' => true, 'data' => ['Password recovery failed.']];
+            $result = ['error' => true, 'data' => ['Password recovery failed.']];
         }
 
+        $this->view($result);
     }
 
     /**
@@ -234,15 +235,15 @@ class CiAuth implements FilterInterface
     {
         try {
             $authorization = explode(" ", getallheaders()['Authorization'])[1];
-            $key     = getenv('JWT_SECRET');
-            $decoded = JWT::decode($authorization, $key, array('HS256'));
+            $key           = getenv('JWT_SECRET');
+            $decoded       = JWT::decode($authorization, $key, array('HS256'));
         } catch (Exception $e) { // Also tried JwtException
             return false;
         }
 
         $token = $this->tokenModel->where('token', $authorization)->first();
 
-        if(isset($token) && $decoded->exp > date("U")) {
+        if (isset($token) && $decoded->exp > date("U")) {
             return true;
         } else {
             return false;
@@ -256,7 +257,7 @@ class CiAuth implements FilterInterface
     {
         $key = getenv('JWT_SECRET');
         $iat = time();
-        $exp = $iat + 3600;
+        $exp = $iat + ((int) getenv('JWT_SUB') * 3600);
 
         $payload = array(
             "iss"   => "Issuer of the " . getenv('JWT_ISS'),
@@ -283,25 +284,13 @@ class CiAuth implements FilterInterface
     }
 
     /**
-     * @param RequestInterface $request
-     * @param null $arguments
-     * @return bool
+     * @param $data
      */
-    public function before(RequestInterface $request, $arguments = null): bool
+    public function view($data)
     {
-        if($this->isLogged()) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param RequestInterface $request
-     * @param ResponseInterface $response
-     * @param null $arguments
-     */
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-    {
-
+        header('Content-Type: application/json; charset=UTF-8');
+        header('Accept: application/json; charset=UTF-8');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+        die();
     }
 }
