@@ -20,12 +20,12 @@ class CiAuth
     /**
      * @var UsersModel
      */
-    private UsersModel $usersModel;
+    private $usersModel;
 
     /**
      * @var TokenModel
      */
-    private TokenModel $tokenModel;
+    private $tokenModel;
 
     /**
      *
