@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Database\Migrations;
+namespace Anwarqasem\CiAuth\Migrations;
 
-use CodeIgniter\Database\Migration;
-
-class Groups extends Migration
+class Groups extends \CodeIgniter\Controller
 {
     public function up()
     {

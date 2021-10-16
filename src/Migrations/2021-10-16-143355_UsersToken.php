@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Database\Migrations;
+namespace Anwarqasem\CiAuth\Migrations;
 
-use CodeIgniter\Database\Migration;
 
-class UsersToken extends Migration
+class UsersToken extends \CodeIgniter\Controller
 {
     public function up()
     {
