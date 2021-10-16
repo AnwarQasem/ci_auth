@@ -257,7 +257,8 @@ class CiAuth
     {
         $key = getenv('JWT_SECRET');
         $iat = time();
-        $exp = $iat + ((int) getenv('JWT_SUB') * 3600);
+        $timeToExpire = getenv('JWT_IAT');
+        $exp = $iat + ((int) $timeToExpire * 3600);
 
         $payload = array(
             "iss"   => "Issuer of the " . getenv('JWT_ISS'),
