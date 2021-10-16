@@ -2,7 +2,9 @@
 
 namespace Anwarqasem\CiAuth\Migrations;
 
-class Users extends \CodeIgniter\Controller
+use CodeIgniter\Database\Migration;
+
+class Users extends Migration
 {
     public function up()
     {
