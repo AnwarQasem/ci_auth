@@ -144,8 +144,8 @@ class CiAuth
             "email" => 'required|valid_email'
         ], [
             "email" => [
-                'required'    => "Email is required!",
-                'valid_email' => "Email address is not in format!",
+                'required'    => lang('validation.email_required'),
+                'valid_email' => lang('validation.email_valid_email'),
             ]
         ]);
 
@@ -196,8 +196,8 @@ class CiAuth
             "password" => 'required|min_length[8]'
         ], [
             "password" => [
-                'required'   => "Password is required!",
-                'min_length' => "Password minimum 8 characters"
+                'required'   => lang('validation.password_required'),
+                'min_length' => lang('validation.password_min_length')
             ]
         ]);
 
@@ -281,6 +281,14 @@ class CiAuth
         } else {
             return false;
         }
+    }
+
+    public function getProfile() {
+
+    }
+
+    public function updateProfile() {
+
     }
 
     /**
