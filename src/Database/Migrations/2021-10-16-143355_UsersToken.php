@@ -1,6 +1,6 @@
 <?php
 
-namespace Anwarqasem\CiAuth\Migrations;
+namespace Anwarqasem\CiAuth\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
