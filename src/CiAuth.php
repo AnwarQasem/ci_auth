@@ -257,8 +257,8 @@ class CiAuth
     {
         $key = getenv('JWT_SECRET');
         $iat = time();
-        $timeToExpire = getenv('JWT_IAT');
-        $exp = $iat + ((int) $timeToExpire * 3600);
+        $tte = (int)getenv('JWT_IAT');
+        $exp = $iat + ($tte * 3600);
 
         $payload = array(
             "iss"   => "Issuer of the " . getenv('JWT_ISS'),
@@ -284,11 +284,13 @@ class CiAuth
         }
     }
 
-    public function getProfile() {
+    public function getProfile()
+    {
 
     }
 
-    public function updateProfile() {
+    public function updateProfile()
+    {
 
     }
 
