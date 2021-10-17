@@ -40,11 +40,11 @@ class UsersToken extends Migration
         ]);
         $this->forge->addForeignKey('user_id', 'users', 'id', 'NO ACTION', 'CASCADE');
         $this->forge->addKey('id', TRUE);
-        $this->forge->createTable('token');
+        $this->forge->createTable('users_token');
     }
 
     public function down()
     {
-        $this->forge->dropTable('token');
+        $this->forge->dropTable('users_token');
     }
 }
