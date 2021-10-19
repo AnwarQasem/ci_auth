@@ -3,7 +3,7 @@
 use CodeIgniter\Model;
 
 
-class TokenModel extends Model
+class Users_tokenModel extends Model
 {
     protected $table      = 'token';
     protected $primaryKey = 'id';

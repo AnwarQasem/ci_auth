@@ -3,7 +3,7 @@
 namespace Anwarqasem\CiAuth;
 
 use Anwarqasem\CiAuth\Models\UsersModel;
-use Anwarqasem\CiAuth\Models\TokenModel;
+use Anwarqasem\CiAuth\Models\Users_tokenModel;
 use Config\Services;
 use Exception;
 use Firebase\JWT\JWT;
@@ -23,9 +23,9 @@ class CiAuth
     private $usersModel;
 
     /**
-     * @var TokenModel
+     * @var Users_tokenModel
      */
-    private $tokenModel;
+    private $users_tokenModel;
 
     /**
      *
@@ -33,7 +33,7 @@ class CiAuth
     public function initController()
     {
         $this->usersModel = new UsersModel();
-        $this->tokenModel = new TokenModel();
+        $this->users_tokenModel = new Users_tokenModel();
     }
 
     /**
@@ -241,7 +241,7 @@ class CiAuth
             return false;
         }
 
-        $token = $this->tokenModel->where('token', $authorization)->first();
+        $token = $this->users_tokenModel->where('token', $authorization)->first();
 
         if (isset($token) && $decoded->exp > date("U")) {
             return true;
@@ -275,7 +275,7 @@ class CiAuth
             'user_id' => $user->id,
             'token'   => $token
         ];
-        $result = $this->tokenModel->insert($data);
+        $result = $this->users_tokenModel->insert($data);
 
         if ($result) {
             return $token;
