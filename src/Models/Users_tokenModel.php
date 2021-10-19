@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 
 class Users_tokenModel extends Model
 {
-    protected $table      = 'token';
+    protected $table      = 'users_token';
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
